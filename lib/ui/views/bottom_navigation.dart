@@ -6,21 +6,23 @@ import 'home_page.dart';
 import 'update_page.dart';
 
 class MyBottomNavigation extends StatelessWidget {
-  const MyBottomNavigation({Key? key}) : super(key: key);
+  MyBottomNavigation({Key? key}) : super(key: key);
 
-  final List<Widget> pages = const [
+  final List<Widget> pages = [
     HomePage(),
     RegistrationPage(),
-    UpdatePage(),
   ];
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => NavigationBloc(),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Bottom Navigation'),
+          actions: [
+            Row(
+              children: [],
+            )
+          ],
         ),
         body: BlocBuilder<NavigationBloc, NavigationState>(
           builder: (context, state) {
@@ -33,7 +35,6 @@ class MyBottomNavigation extends StatelessWidget {
               items: const [
                 BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
                 BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Add'),
-                BottomNavigationBarItem(icon: Icon(Icons.update), label: 'Update'),
               ],
               currentIndex: state.selectedIndex,
               onTap: (index) {
