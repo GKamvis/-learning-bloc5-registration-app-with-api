@@ -1,42 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myapp/data/repositories/person_dao.dart';
+import 'package:myapp/ui/cubit/home_page_cubit.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
-
-  Future<List<PersonDao>> getPerson() async {
-    var personList = <PersonDao>[];
-    var p = PersonDao(id: 1, name: 'name', phone: 'phone0');
-    var p1 = PersonDao(id: 2, name: 'name1', phone: 'phone1');
-    var p2 = PersonDao(id: 3, name: 'name2', phone: 'phone2');
-    var p3 = PersonDao(id: 4, name: 'name3', phone: 'phone3');
-    personList.add(p);
-    personList.add(p1);
-    personList.add(p2);
-    personList.add(p3);
-    return personList;
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: IconButton(
-            onPressed: () {
-            },
-            icon: const Icon(Icons.search),
+    return BlocProvider(
+      create: (context) => HomePageCubit()..getPerson(),
+      child: Scaffold(
+          appBar: AppBar(
+            title: IconButton(
+              onPressed: () {
+              },
+              icon: const Icon(Icons.search),
+            ),
           ),
-        ),
-        
-          body: Expanded(
-            child: FutureBuilder(
-                      future: getPerson(),
-                      builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              var people = snapshot.data;
+          
+            body: BlocBuilder<HomePageCubit, List<PersonDao>>(
+             builder: (context, people) {
+            if (people.isNotEmpty) {
               return ListView.builder(
-                itemCount: people!.length,
+                itemCount: people.length,
                 itemBuilder: (context, index) {
                   var person = people[index];
                   return GestureDetector(
@@ -67,6 +53,6 @@ class HomePage extends StatelessWidget {
                       },
                     ),
           ),
-        );
+    );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:myapp/ui/cubit/home_page_cubit.dart';
 import 'package:myapp/ui/cubit/search/search_Repo_cubit.dart';
 import 'package:myapp/ui/views/bottom_navigation.dart';
 import 'package:myapp/ui/views/update_page.dart';
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => SearchCubit()),
+        BlocProvider(create: (_) => HomePageCubit()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
