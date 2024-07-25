@@ -20,6 +20,18 @@ class PersonRepository {
     return personList;
   }
 
+  Future<PersonDao> addPerson(PersonDao person) async{
+    return person;
+  }
+
+  Future<PersonDao> updatePerson(PersonDao person) async{
+    return person;
+  }
+
+  Future<void> deletePerson(PersonDao person) async{
+    return;
+  }
+
 
   
 }

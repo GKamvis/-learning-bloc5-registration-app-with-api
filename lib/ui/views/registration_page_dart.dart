@@ -36,6 +36,7 @@ class RegistrationPage extends StatelessWidget {
                 )),
             ElevatedButton(
                 onPressed: () {
+                  
                   Navigator.pushNamed(context, '/bottomnavigation');
                   print(tfController2.text); 
                 },

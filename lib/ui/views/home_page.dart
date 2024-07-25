@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myapp/data/repositories/person_dao.dart';
 import 'package:myapp/ui/cubit/home_page_cubit.dart';
+import 'package:myapp/ui/cubit/search/search_Repo_cubit.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({super.key});
@@ -10,16 +11,37 @@ class HomePage extends StatelessWidget {
     return BlocProvider(
       create: (context) => HomePageCubit()..getPerson(),
       child: Scaffold(
-          appBar: AppBar(
-            title: IconButton(
-              onPressed: () {
-              },
-              icon: const Icon(Icons.search),
-            ),
+        appBar: AppBar(
+          title: BlocBuilder<SearchCubit, bool>(
+            builder: (context, showSearch) {
+              return showSearch
+                  ? TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Search...',
+                      ),
+                      onChanged: (query) {
+//
+                      },
+                    )
+                  : Text('Home Page');
+            },
           ),
-          
-            body: BlocBuilder<HomePageCubit, List<PersonDao>>(
-             builder: (context, people) {
+          actions: [
+            BlocBuilder<SearchCubit, bool>(
+              builder: (context, state) {
+                return
+                IconButton(
+                  onPressed: () {
+                    BlocProvider.of<SearchCubit>(context).toggleSearch();
+                  },
+                  icon: state ? Icon(Icons.cancel) : Icon(Icons.search),
+                );
+              },
+            ),
+          ],
+        ),
+        body: BlocBuilder<HomePageCubit, List<PersonDao>>(
+          builder: (context, people) {
             if (people.isNotEmpty) {
               return ListView.builder(
                 itemCount: people.length,
@@ -27,7 +49,8 @@ class HomePage extends StatelessWidget {
                   var person = people[index];
                   return GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, '/update' , arguments: person).then((_) {
+                      Navigator.pushNamed(context, '/update', arguments: person)
+                          .then((_) {
                         print('returned home page');
                       });
                     },
@@ -50,9 +73,9 @@ class HomePage extends StatelessWidget {
             return const Center(
               child: CircularProgressIndicator(),
             );
-                      },
-                    ),
-          ),
+          },
+        ),
+      ),
     );
   }
 }
