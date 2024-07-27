@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myapp/ui/cubit/navigation%20cubits/navigation_bloc.dart';
 import 'package:myapp/ui/views/registration_page_dart.dart';
 import 'home_page.dart';
-import 'update_page.dart';
 
 class MyBottomNavigation extends StatelessWidget {
   MyBottomNavigation({Key? key}) : super(key: key);
@@ -18,7 +17,7 @@ class MyBottomNavigation extends StatelessWidget {
       create: (_) => NavigationBloc(),
       child: Scaffold(
         appBar: AppBar(
-          actions: [
+          actions: const [
             Row(
               children: [],
             )

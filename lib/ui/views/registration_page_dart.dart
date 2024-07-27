@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../cubit/registration_page_cubit.dart';
 
 class RegistrationPage extends StatelessWidget {
   RegistrationPage({super.key});
@@ -9,7 +10,6 @@ class RegistrationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Center(
@@ -32,13 +32,13 @@ class RegistrationPage extends StatelessWidget {
                       borderRadius: const BorderRadius.all(
                     Radius.circular(20),
                   )),
-                  hintText: 'Enter your name',
+                  hintText: 'Enter your phone number',
                 )),
             ElevatedButton(
                 onPressed: () {
-                  
-                  Navigator.pushNamed(context, '/bottomnavigation');
-                  print(tfController2.text); 
+                  context
+                      .read<RegistrationPageCubit>()
+                      .addPerson(tfController.text, tfController2.text);
                 },
                 child: const Text('Submit'))
           ],

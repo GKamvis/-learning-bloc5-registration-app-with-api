@@ -7,6 +7,15 @@ class HomePageCubit extends Cubit<List<PersonDao>> {
 
   Future<void> getPerson() async {
     emit(await personRepo.getPerson());
-    
+  }
+
+  Future<void> deletePerson(int id) async {
+    await personRepo.deletePerson(id);
+    getPerson();
+  }
+
+  Future<void> findPerson(String query) async {
+    var res = await personRepo.findPerson(query);
+    emit(res);
   }
 }

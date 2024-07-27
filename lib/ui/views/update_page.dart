@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:myapp/data/repositories/person_dao.dart';
+import 'package:myapp/ui/cubit/update_page_cubit.dart';
 
 class UpdatePage extends StatelessWidget {
    UpdatePage({super.key});
@@ -21,7 +23,9 @@ class UpdatePage extends StatelessWidget {
             children: [
               TextField(controller: nameController,decoration: InputDecoration(border:OutlineInputBorder(borderRadius: const BorderRadius.all(Radius.circular(20),)),hintText: 'update  your name',)),  
               TextField(controller: phoneController,decoration: InputDecoration(border:OutlineInputBorder(borderRadius: const BorderRadius.all(Radius.circular(20),)),hintText: 'update your name',)),   
-              ElevatedButton(onPressed: () {}, child: const Text('update'))
+              ElevatedButton(onPressed: () {
+                context.read<UpdatePageCubit>().updatePerson(person.id, nameController.text, phoneController.text);
+              }, child: const Text('update'))
             ],
           )
         ),

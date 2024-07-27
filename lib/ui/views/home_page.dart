@@ -5,11 +5,15 @@ import 'package:myapp/ui/cubit/home_page_cubit.dart';
 import 'package:myapp/ui/cubit/search/search_Repo_cubit.dart';
 
 class HomePage extends StatelessWidget {
-  HomePage({super.key});
+  HomePage({Key? key});
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => HomePageCubit()..getPerson(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => HomePageCubit()..getPerson()),
+        BlocProvider(create: (context) => SearchCubit()),
+      ],
       child: Scaffold(
         appBar: AppBar(
           title: BlocBuilder<SearchCubit, bool>(
@@ -20,7 +24,7 @@ class HomePage extends StatelessWidget {
                         hintText: 'Search...',
                       ),
                       onChanged: (query) {
-//
+                        context.read<HomePageCubit>().findPerson(query);
                       },
                     )
                   : Text('Home Page');
@@ -29,10 +33,13 @@ class HomePage extends StatelessWidget {
           actions: [
             BlocBuilder<SearchCubit, bool>(
               builder: (context, state) {
-                return
-                IconButton(
+                return IconButton(
                   onPressed: () {
-                    BlocProvider.of<SearchCubit>(context).toggleSearch();
+                    context.read<SearchCubit>().toggleSearch();
+                    // Axtarış rejimi dəyişdikdə şəxslərin siyahısını yeniləyin
+                    if (!state) {
+                      context.read<HomePageCubit>().getPerson();
+                    }
                   },
                   icon: state ? Icon(Icons.cancel) : Icon(Icons.search),
                 );
@@ -51,7 +58,7 @@ class HomePage extends StatelessWidget {
                     onTap: () {
                       Navigator.pushNamed(context, '/update', arguments: person)
                           .then((_) {
-                        print('returned home page');
+                        context.read<HomePageCubit>().getPerson();
                       });
                     },
                     child: Card(
@@ -60,19 +67,26 @@ class HomePage extends StatelessWidget {
                         children: [
                           Text(person.name),
                           Text(person.phone),
-                          SizedBox(
-                            height: 50,
-                          )
+                          SizedBox(height: 50),
+                          IconButton(
+                            onPressed: () {
+                              context
+                                  .read<HomePageCubit>()
+                                  .deletePerson(person.id);
+                            },
+                            icon: Icon(Icons.delete),
+                          ),
                         ],
                       ),
                     ),
                   );
                 },
               );
+            } else {
+              return Center(
+                child: Text('No results found.'),
+              );
             }
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
           },
         ),
       ),

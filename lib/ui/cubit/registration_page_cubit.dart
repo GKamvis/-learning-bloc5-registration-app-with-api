@@ -5,7 +5,7 @@ class RegistrationPageCubit extends Cubit<void> {
   RegistrationPageCubit() : super(0);
 
   var personRepo = PersonRepository();
-  Future<void> addPerson(PersonDao person) async {
-    emit(await personRepo.addPerson(person));
+  Future<void> addPerson(String name , String phone) async {
+    await personRepo.addPerson(name, phone);
   }
 }
