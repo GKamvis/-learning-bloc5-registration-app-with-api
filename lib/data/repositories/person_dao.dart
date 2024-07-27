@@ -50,7 +50,7 @@ class PersonRepository {
 Future<List<PersonDao>> findPerson(String query) async {
   var db = await DbHelper.openDb();
   List<Map<String, dynamic>> personMap =
-      await db.rawQuery("SELECT * FROM person WHERE name LIKE ?", ['%$query%']);
+      await db.rawQuery("SELECT * FROM registration WHERE name LIKE '%$query%'");
   return List.generate(
     personMap.length,
     (i) {
