@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:myapp/data/repositories/person_dao.dart';
 import 'package:myapp/ui/cubit/home_page_cubit.dart';
-import 'package:myapp/ui/cubit/search/search_Repo_cubit.dart';
+
+import '../../data/repositories/person_dao.dart';
+import '../cubit/search/search_Repo_cubit.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
@@ -12,28 +13,26 @@ class HomePage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => HomePageCubit()..getPerson()),
-        BlocProvider(create: (context) => SearchCubit()), // SearchCubit əlavə olunur
+        BlocProvider(create: (context) => SearchCubit()),
       ],
       child: Scaffold(
         appBar: AppBar(
           title: BlocBuilder<SearchCubit, bool>(
             builder: (context, showSearch) {
               return showSearch
-                ? TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Search...',
-                    ),
-                    onChanged: (newQuery) {
-                      if (newQuery.isEmpty) {
-                        context.read<HomePageCubit>().getPerson();
-                        return;
-                      }
-                     context.read<HomePageCubit>().findPerson(newQuery);
-
-                      context.read<HomePageCubit>().findPerson(newQuery);
-                    },
-                  )
-                : Text('Home Page');
+                  ? TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Search...',
+                      ),
+                      onChanged: (newQuery) {
+                        if (newQuery.isEmpty) {
+                          context.read<HomePageCubit>().getPerson();
+                          return;
+                        }
+                        context.read<HomePageCubit>().findPerson(newQuery);
+                      },
+                    )
+                  : Text('Home Page');
             },
           ),
           actions: [
@@ -54,6 +53,7 @@ class HomePage extends StatelessWidget {
         ),
         body: BlocBuilder<HomePageCubit, List<PersonDao>>(
           builder: (context, people) {
+            print("People list: $people"); // Debug print
             if (people.isNotEmpty) {
               return ListView.builder(
                 itemCount: people.length,
@@ -77,7 +77,7 @@ class HomePage extends StatelessWidget {
                             onPressed: () {
                               context
                                   .read<HomePageCubit>()
-                                  .deletePerson(person.id);
+                                  .deletePerson(int.parse(person.id));
                             },
                             icon: Icon(Icons.delete),
                           ),

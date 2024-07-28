@@ -6,7 +6,13 @@ class HomePageCubit extends Cubit<List<PersonDao>> {
   var personRepo = PersonRepository();
 
   Future<void> getPerson() async {
-    emit(await personRepo.getPerson());
+    try {
+      final person = await personRepo.getPerson();
+      print("Persons fetched: $person"); // Debug print
+      emit(person);
+    } catch (e) {
+      print("Error fetching persons: $e"); // Debug print
+    }
   }
 
   Future<void> deletePerson(int id) async {
@@ -16,6 +22,7 @@ class HomePageCubit extends Cubit<List<PersonDao>> {
 
   Future<void> findPerson(String query) async {
     var res = await personRepo.findPerson(query);
+    print("Persons found: $res"); // Debug print
     emit(res);
   }
 }

@@ -24,7 +24,7 @@ class UpdatePage extends StatelessWidget {
               TextField(controller: nameController,decoration: InputDecoration(border:OutlineInputBorder(borderRadius: const BorderRadius.all(Radius.circular(20),)),hintText: 'update  your name',)),  
               TextField(controller: phoneController,decoration: InputDecoration(border:OutlineInputBorder(borderRadius: const BorderRadius.all(Radius.circular(20),)),hintText: 'update your name',)),   
               ElevatedButton(onPressed: () {
-                context.read<UpdatePageCubit>().updatePerson(person.id, nameController.text, phoneController.text);
+                context.read<UpdatePageCubit>().updatePerson(int.parse(person.id), nameController.text, phoneController.text);
               }, child: const Text('update'))
             ],
           )
